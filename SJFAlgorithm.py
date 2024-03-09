@@ -19,8 +19,6 @@ InTimes.remove(InTimes[0])
 InTimes = [x for _,x in sorted(zip(Times,InTimes))]
 Times.sort()
 
-
-
 TEspera = 0
 TSistema = 0
 
