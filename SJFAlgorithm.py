@@ -24,6 +24,7 @@ Times.sort()
 TEspera = 0
 TSistema = 0
 
+
 for x in Times:
     #print(x)
     FinishTime += x
