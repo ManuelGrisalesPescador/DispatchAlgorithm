@@ -1,6 +1,7 @@
 import pygame
 import sys
 from collections import deque
+import Button
 
 # Colores
 WHITE = (255, 255, 255)
@@ -23,6 +24,8 @@ pygame.display.set_caption("Round Robin Scheduler")
 
 # Fuente
 font = pygame.font.SysFont(None, 30)
+
+BackButton = pygame.image.load('Imgs/BackButton.png').convert_alpha()
 
 class Proceso:
     def __init__(self, nombre, tiempo_total, tiempo_llegada):
@@ -92,7 +95,7 @@ def draw_gantt(gantt):
     y_spacing = 10
     max_time = max([fin for _, _, fin, _ in gantt])
     x_unit = (WIDTH - 300) / max_time
-    y = HEIGHT - (len(gantt) * (bar_height + y_spacing)) - 100
+    FirstHeight = HEIGHT - (len(gantt) * (bar_height + y_spacing)) - 100
 
     # Dibujar ejes
     pygame.draw.line(screen, BLACK, (200, 100), (200, HEIGHT - 100), 2)
@@ -106,10 +109,17 @@ def draw_gantt(gantt):
     gantt.sort(key=lambda x: x[1])
 
     for proceso, inicio, fin, color in gantt:
+        Process = int(proceso[1])
+
+        if Process != 1:
+            y = (((bar_height + y_spacing) + ((bar_height + y_spacing) * (Process - 2))) + (FirstHeight))
+        else:
+            y = FirstHeight
+
         pygame.draw.rect(screen, color, (200 + inicio * x_unit, y, (fin - inicio) * x_unit, bar_height))
         text = font.render(proceso, True, BLACK)
         screen.blit(text, (150, y + bar_height // 2 - text.get_height() // 2))
-        y += bar_height + y_spacing
+        #y += bar_height + y_spacing
 
 def draw_info(tiempo_espera_promedio, tiempo_sistema_promedio):
     text_te = font.render(f"Te: {tiempo_espera_promedio:.2f}", True, BLACK)
@@ -126,17 +136,19 @@ def draw_legend():
         screen.blit(text, (WIDTH - 50, legend_y))
         legend_y += 30
 
-def main():
+
+
+def main(Process, Q):
     global procesos
     # Procesos de ejemplo
     proceso1 = Proceso("P1", 6, 0)
     proceso2 = Proceso("P2", 4, 2)
     proceso3 = Proceso("P3", 2, 4)
 
-    procesos = [proceso1, proceso2, proceso3]
+    procesos = Process
 
     # Quantum
-    Q = 2
+    #Q = 2
 
     # Ordenar procesos por tiempo de llegada
     procesos.sort(key=lambda x: x.tiempo_llegada)
@@ -144,20 +156,27 @@ def main():
     # Ejecutar algoritmo Round Robin
     gantt, tiempo_espera_promedio, tiempo_sistema_promedio = round_robin(procesos, Q)
 
+    BackB = Button.Button(50, 25, BackButton, screen, pygame)
+
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                pygame.quit()
+                sys.exit()
 
         screen.fill(WHITE)
         draw_gantt(gantt)
         draw_info(tiempo_espera_promedio, tiempo_sistema_promedio)
         draw_legend()
+        pos = pygame.mouse.get_pos()
+        BackB.Draw(pos)
+        if BackB.Action:
+            running = False
         pygame.display.flip()
 
-    pygame.quit()
-    sys.exit()
+    
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+#    main()
