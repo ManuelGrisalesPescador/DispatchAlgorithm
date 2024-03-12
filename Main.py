@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import sys, copy, Button
+import sys, Button
 
 import FifoAlgorithm, SJFAlgorithm, Round_robin
 

@@ -24,6 +24,7 @@ pygame.display.set_caption("Round Robin Scheduler")
 
 # Fuente
 font = pygame.font.SysFont(None, 30)
+font2 = pygame.font.SysFont(None, 20)
 
 BackButton = pygame.image.load('Imgs/BackButton.png').convert_alpha()
 
@@ -95,15 +96,16 @@ def draw_gantt(gantt):
     y_spacing = 10
     max_time = max([fin for _, _, fin, _ in gantt])
     x_unit = (WIDTH - 300) / max_time
-    FirstHeight = abs(HEIGHT - (len(procesos) * (bar_height + y_spacing))) - 100
 
     # Dibujar ejes
-    pygame.draw.line(screen, BLACK, (200, 100), (200, HEIGHT - 100), 2)
-    pygame.draw.line(screen, BLACK, (200, HEIGHT - 100), (WIDTH - 100, HEIGHT - 100), 2)
+    pygame.draw.line(screen, BLACK, (200, 100), (200, HEIGHT - 100), 2) #Dibujar eje Y
+    pygame.draw.line(screen, BLACK, (200, HEIGHT - 100), (WIDTH - 100, HEIGHT - 100), 2) #Dibujar eje X
 
     # Dibujar cuadrícula
     for x in range(0, max_time + 1):
         pygame.draw.line(screen, BLACK, (200 + x * x_unit, 100), (200 + x * x_unit, HEIGHT - 100), 1)
+        text_n = font2.render(f"{x}", True, BLACK)
+        screen.blit(text_n, (200 + x * x_unit, HEIGHT - 90))
 
     # Ordenar procesos por orden de llegada
     gantt.sort(key=lambda x: x[1])
@@ -111,11 +113,7 @@ def draw_gantt(gantt):
     for proceso, inicio, fin, color in gantt:
         Process = int(proceso[1])
 
-        if Process != 1:
-            y = (((bar_height + y_spacing) + ((bar_height + y_spacing) * (Process - 2))) + (FirstHeight))
-        else:
-            y = FirstHeight
-
+        y = HEIGHT - ((bar_height + y_spacing) * (Process - 1)) - 130
         pygame.draw.rect(screen, color, (200 + inicio * x_unit, y, (fin - inicio) * x_unit, bar_height))
         text = font.render(proceso, True, BLACK)
         screen.blit(text, (150, y + bar_height // 2 - text.get_height() // 2))

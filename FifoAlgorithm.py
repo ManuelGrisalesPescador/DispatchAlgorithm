@@ -9,6 +9,7 @@ BLACK = (0, 0, 0)
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 font = pygame.font.SysFont(None, 30)
+font2 = pygame.font.SysFont(None, 20)
 pygame.display.set_caption("FIFO Algorithm")
 
 BackButton = pygame.image.load('Imgs/BackButton.png').convert_alpha()
@@ -44,7 +45,7 @@ def CalcFIFO(Process):
 
     TEspera = TEspera / len(Times)
 
-    for Tf, InTime in zip(copy.copy(Tf),InTimes):
+    for Tf, InTime in zip(copy.copy(Tf), InTimes):
         TSistema += (Tf - InTime)
 
     TSistema = TSistema / len(InTimes)
@@ -61,7 +62,6 @@ def DisplayFIFO(Gantt):
     y_spacing = 10
     max_time = max([fin for _, _, fin, _ in Gantt])
     x_unit = (WIDTH - 300) / max_time
-    FirstHeight = HEIGHT - (len(Gantt) * (bar_height + y_spacing)) - 100
 
     # Dibujar ejes
     pygame.draw.line(screen, BLACK, (200, 100), (200, HEIGHT - 100), 2)
@@ -70,14 +70,13 @@ def DisplayFIFO(Gantt):
     # Dibujar cuadrícula
     for x in range(0, max_time + 1):
         pygame.draw.line(screen, BLACK, (200 + x * x_unit, 100), (200 + x * x_unit, HEIGHT - 100), 1)
+        text_n = font2.render(f"{x}", True, BLACK)
+        screen.blit(text_n, (200 + x * x_unit, HEIGHT - 90))
 
     for proceso, inicio, fin, color in Gantt:
         Process = int(proceso[1])
 
-        if Process != 1:
-            y = (((bar_height + y_spacing) + ((bar_height + y_spacing) * (Process - 2))) + (FirstHeight))
-        else:
-            y = FirstHeight
+        y = HEIGHT - ((bar_height + y_spacing) * (Process - 1)) - 130
 
         pygame.draw.rect(screen, color, (200 + inicio * x_unit, y, (fin - inicio) * x_unit, bar_height))
         text = font.render(proceso, True, BLACK)

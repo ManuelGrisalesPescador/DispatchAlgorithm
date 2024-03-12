@@ -1,6 +1,6 @@
 
 import pygame
-import copy, sys, Button
+import sys, Button
 
 
 WIDTH = 1000
@@ -10,6 +10,7 @@ BLACK = (0, 0, 0)
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 font = pygame.font.SysFont(None, 30)
+font2 = pygame.font.SysFont(None, 20)
 pygame.display.set_caption("FIFO Algorithm")
 
 
@@ -54,24 +55,15 @@ def CalcSJF(Process):
 
     FinalTimes = Tf
     StartTimes = Ts
-        
-    
-    #print(Times)
-    #print(InTimes)
-    #print(Ts)
 
     for Ts, InTime in zip(Ts,InTimes):
         TEspera += (Ts - InTime)
 
     TEspera = TEspera / len(InTimes)
-
-    #print(TEspera)
     for Tf, InTime in zip(Tf,InTimes):
         TSistema += (Tf - InTime)
 
     TSistema = TSistema / len(InTimes)
-
-    #print(TSistema)
 
     Gantt = []
 
@@ -85,7 +77,6 @@ def DisplaySJF(Gantt):
     y_spacing = 10
     max_time = max([fin for _, _, fin, _ in Gantt])
     x_unit = (WIDTH - 300) / max_time
-    FirstHeight = HEIGHT - (len(Gantt) * (bar_height + y_spacing)) - 100
 
     # Dibujar ejes
     pygame.draw.line(screen, BLACK, (200, 100), (200, HEIGHT - 100), 2)
@@ -94,19 +85,17 @@ def DisplaySJF(Gantt):
     # Dibujar cuadrícula
     for x in range(0, max_time + 1):
         pygame.draw.line(screen, BLACK, (200 + x * x_unit, 100), (200 + x * x_unit, HEIGHT - 100), 1)
+        text_n = font2.render(f"{x}", True, BLACK)
+        screen.blit(text_n, (200 + x * x_unit, HEIGHT - 90))
 
     for proceso, inicio, fin, color in Gantt:
         Process = int(proceso[1])
 
-        if Process != 1:
-            y = (((bar_height + y_spacing) + ((bar_height + y_spacing) * (Process - 2))) + (FirstHeight))
-        else:
-            y = FirstHeight
+        y = HEIGHT - ((bar_height + y_spacing) * (Process - 1)) - 130
 
         pygame.draw.rect(screen, color, (200 + inicio * x_unit, y, (fin - inicio) * x_unit, bar_height))
         text = font.render(proceso, True, BLACK)
         screen.blit(text, (150, y + bar_height // 2 - text.get_height() // 2))
-        #y += bar_height + y_spacing
 
 def draw_info(tiempo_espera_promedio, tiempo_sistema_promedio):
     text_te = font.render(f"Te: {tiempo_espera_promedio:.2f}", True, BLACK)
@@ -148,8 +137,3 @@ def main(Process):
         draw_info(Te, Ts)
 
         pygame.display.flip()
-
-
-
-#if __name__ == "__main__":
-#    main()
