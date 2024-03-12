@@ -95,7 +95,7 @@ def draw_gantt(gantt):
     y_spacing = 10
     max_time = max([fin for _, _, fin, _ in gantt])
     x_unit = (WIDTH - 300) / max_time
-    FirstHeight = HEIGHT - (len(gantt) * (bar_height + y_spacing)) - 100
+    FirstHeight = abs(HEIGHT - (len(procesos) * (bar_height + y_spacing))) - 100
 
     # Dibujar ejes
     pygame.draw.line(screen, BLACK, (200, 100), (200, HEIGHT - 100), 2)

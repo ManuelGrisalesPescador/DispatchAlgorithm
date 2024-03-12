@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import sys, copy, Button
 
-import Round_Robin, FifoAlgorithm, SJFAlgorithm
+import FifoAlgorithm, SJFAlgorithm, Round_robin
 
 WIDTH = 1000
 HEIGHT = 600
@@ -90,7 +90,7 @@ def main():
         elif Buttons[2].Action:
             Buttons[2].Action = False
             print("B3")
-            Round_Robin.main(procesos, Q)
+            Round_robin.main(procesos, Q)
 
         pygame.display.flip()
 
