@@ -82,7 +82,6 @@ def DisplayFIFO(Gantt):
         pygame.draw.rect(screen, color, (200 + inicio * x_unit, y, (fin - inicio) * x_unit, bar_height))
         text = font.render(proceso, True, BLACK)
         screen.blit(text, (150, y + bar_height // 2 - text.get_height() // 2))
-        #y += bar_height + y_spacing
 
 
 def draw_info(tiempo_espera_promedio, tiempo_sistema_promedio):
@@ -127,7 +126,3 @@ def main(Process):
         draw_info(Te, Ts)
 
         pygame.display.flip()
-
-
-#if __name__ == "__main__":
-#    main()

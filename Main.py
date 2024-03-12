@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import sys, copy, Button
 
-import anim, FifoAlgorithm, SJFAlgorithm
+import Round_Robin, FifoAlgorithm, SJFAlgorithm
 
 WIDTH = 1000
 HEIGHT = 600
@@ -60,13 +60,24 @@ def main():
         for Button in Buttons:
             Button.Draw(pos)
 
-        proceso1 = Proceso("P1", 6, 0)
-        proceso2 = Proceso("P2", 4, 2)
-        proceso3 = Proceso("P3", 2, 4)
+
+        #Ejemplo1
+        # proceso1 = Proceso("P1", 6, 0)
+        # proceso2 = Proceso("P2", 4, 2)
+        # proceso3 = Proceso("P3", 2, 4)
+        
+        #Ejemplo2
+        proceso1 = Proceso("P1", 2, 0)
+        proceso2 = Proceso("P2", 4, 1)
+        proceso3 = Proceso("P3", 6, 2)
+        proceso4 = Proceso("P4", 10, 2)
+        proceso5 = Proceso("P5", 8, 3)
+        proceso6 = Proceso("P6", 4, 4)
 
         Q = 2
 
-        procesos = [proceso1, proceso2, proceso3]
+        # procesos = [proceso1, proceso2, proceso3] #1
+        procesos = [proceso1, proceso2, proceso3, proceso4, proceso5, proceso6] #2
 
         if Buttons[0].Action:
             Buttons[0].Action = False
@@ -79,7 +90,7 @@ def main():
         elif Buttons[2].Action:
             Buttons[2].Action = False
             print("B3")
-            anim.main(procesos, Q)
+            Round_Robin.main(procesos, Q)
 
         pygame.display.flip()
 
